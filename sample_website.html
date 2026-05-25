@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample E-commerce Store</title>
+    <script src="tracker.js"></script>
+    <style>
+        body { 
+            font-family: sans-serif; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .product { border: 1px solid rgba(255, 255, 255, 0.3); padding: 15px; margin-bottom: 20px; border-radius: 5px; background: rgba(0, 0, 0, 0.2); }
+        button { padding: 10px 15px; background: #ff7e5f; color: white; border: none; cursor: pointer; border-radius: 3px; font-weight: bold; }
+        button:hover { background: #feb47b; }
+        .nav { margin-bottom: 30px; padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.3); }
+        .nav a { margin-right: 15px; text-decoration: none; color: white; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="#home" onclick="simulateNav('Home')">Home</a>
+        <a href="#products" onclick="simulateNav('Products')">Products</a>
+        <a href="#cart" onclick="simulateNav('Cart')">Cart</a>
+        <a href="#checkout" onclick="simulateNav('Checkout')">Checkout</a>
+    </div>
+
+    <div id="content">
+        <h1>Welcome to the Store</h1>
+        <p>This page simulates an application. Click the links above to change pages without reloading, which will trigger custom page view events.</p>
+        
+        <div class="product">
+            <h3>Awesome T-Shirt</h3>
+            <p>$19.99</p>
+            <button onclick="addToCart('Awesome T-Shirt')">Add to Cart</button>
+        </div>
+        
+        <div class="product">
+            <h3>Cool Coffee Mug</h3>
+            <p>$12.99</p>
+            <button onclick="addToCart('Cool Coffee Mug')">Add to Cart</button>
+        </div>
+    </div>
+
+    <script>
+        // Simulate SPA navigation
+        function simulateNav(pageName) {
+            document.title = "Store - " + pageName;
+            document.getElementById('content').innerHTML = `<h1>${pageName}</h1><p>You are now viewing the ${pageName} page.</p>`;
+            
+            // Push state to change URL for the tracker
+            history.pushState(null, '', '#' + pageName.toLowerCase());
+            
+            // Track the new page view
+            if (window.WebTracker) {
+                window.WebTracker.track('page_view', { title: document.title });
+            }
+        }
+
+        function addToCart(itemName) {
+            alert(itemName + " added to cart!");
+            // Custom event
+            if (window.WebTracker) {
+                window.WebTracker.track('add_to_cart', { item: itemName });
+            }
+        }
+    </script>
+</body>
+</html>
